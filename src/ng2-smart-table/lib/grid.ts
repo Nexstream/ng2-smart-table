@@ -11,6 +11,7 @@ import { DataSource } from './data-source/data-source';
 export class Grid {
 
   createFormShown: boolean = false;
+  showLoading: boolean = true;
 
   source: DataSource;
   settings: any;
@@ -59,11 +60,17 @@ export class Grid {
   setSource(source: DataSource) {
     this.source = this.prepareSource(source);
 
-    this.source.onChanged().subscribe((changes) => this.processDataChange(changes));
+    this.source.onChanged().subscribe((changes) =>
+      this.processDataChange(changes)
+    );
 
     this.source.onUpdated().subscribe((data) => {
       const changedRow = this.dataSet.findRowByData(data);
       changedRow.setData(data);
+    });
+
+    this.source.onRequestData().subscribe((states: boolean) => {
+      this.showLoading = states;
     });
   }
 
@@ -106,7 +113,7 @@ export class Grid {
       this.source.prepend(newData).then(() => {
         this.createFormShown = false;
         this.dataSet.createNewRow();
-      });       
+      });
       }
     }).catch((err) => {
       // doing nothing
@@ -182,6 +189,7 @@ export class Grid {
         }
       }
     }
+    this.source.onRequestSource.next(false);
   }
 
   shouldProcessChange(changes: any): boolean {
@@ -230,9 +238,9 @@ export class Grid {
     if (initialSource && initialSource['field'] && initialSource['direction']) {
       source.setSort([initialSource], false);
     }
-    if (this.getSetting('pager.display') === true) {
-      source.setPaging(1, this.getSetting('pager.perPage'), false);
-    }
+    // if (this.getSetting('pager.display') === true) {
+    //   source.setPaging(1, this.getSetting('pager.perPage'), false);
+    // }
 
     source.refresh();
     return source;

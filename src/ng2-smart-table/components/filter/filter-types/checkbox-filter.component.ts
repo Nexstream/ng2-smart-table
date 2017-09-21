@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 
 import { DefaultFilter } from './default-filter';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/skip';
+
 
 @Component({
   selector: 'checkbox-filter',
@@ -24,6 +26,7 @@ export class CheckboxFilterComponent extends DefaultFilter implements OnInit {
   ngOnInit() {
     this.changesSubscription = this.inputControl.valueChanges
       .debounceTime(this.delay)
+      .skip(1)
       .subscribe((checked: boolean) => {
         this.filterActive = true;
         const trueVal = (this.column.getFilterConfig() && this.column.getFilterConfig().true) || true;

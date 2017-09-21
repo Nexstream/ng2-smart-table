@@ -1,4 +1,4 @@
-import { Component, Input, Output, SimpleChange, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, SimpleChange, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { Grid } from './lib/grid';
 import { DataSource } from './lib/data-source/data-source';
@@ -10,6 +10,7 @@ import { LocalDataSource } from './lib/data-source/local/local.data-source';
   selector: 'ng2-smart-table',
   styleUrls: ['./ng2-smart-table.component.scss'],
   templateUrl: './ng2-smart-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Ng2SmartTableComponent implements OnChanges {
 
@@ -25,7 +26,7 @@ export class Ng2SmartTableComponent implements OnChanges {
   @Output() deleteConfirm = new EventEmitter<any>();
   @Output() editConfirm = new EventEmitter<any>();
   @Output() createConfirm = new EventEmitter<any>();
-  @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
+  // @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
 
   grid: Grid;
   defaultSettings: Object = {
@@ -75,19 +76,25 @@ export class Ng2SmartTableComponent implements OnChanges {
   };
 
   isAllSelected: boolean = false;
+  showLoading: boolean = false;
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
     if (this.grid) {
       if (changes['settings']) {
         this.grid.setSettings(this.prepareSettings());
       }
-      if (changes['source']) {        
+      if (changes['source']) {
         this.source = this.prepareSource();
         this.grid.setSource(this.source);
       }
     } else {
+      this.showLoading = true;
       this.initGrid();
     }
+
+    this.source.onRequestData().subscribe((states: boolean) => {
+      this.showLoading = states;
+    })
   }
 
   editRowSelect(row: Row) {
@@ -106,9 +113,9 @@ export class Ng2SmartTableComponent implements OnChanges {
     }
   }
 
-  onRowHover(row: Row) {
-      this.rowHover.emit(row);
-  }
+  // onRowHover(row: Row) {
+  //   this.rowHover.emit(row);
+  // }
 
   multipleSelectRow(row: Row) {
     this.grid.multipleSelectRow(row);

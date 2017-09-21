@@ -3,5 +3,6 @@
     "files.exclude": {
         ".vscode/chrome": true
     },
-    "tslint.enable": false
-}
+    "tslint.enable": false,
+    "vsicons.presets.angular": true
+  }

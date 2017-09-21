@@ -5,6 +5,8 @@ import { CompleterService } from 'ng2-completer';
 import { DefaultFilter } from './default-filter';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/skip';
+
 
 @Component({
   selector: 'completer-filter',
@@ -36,6 +38,7 @@ export class CompleterFilterComponent extends DefaultFilter implements OnInit {
       .map((ev: any) => (ev && ev.title) || ev || '')
       .distinctUntilChanged()
       .debounceTime(this.delay)
+      .skip(1)
       .subscribe((search: string) => {
         this.query = search;
         this.setFilter();

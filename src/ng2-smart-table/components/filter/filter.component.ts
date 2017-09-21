@@ -27,6 +27,12 @@ import { Subscription } from 'rxjs/Subscription';
                         [column]="column"
                         (filter)="onFilter($event)">
       </completer-filter>
+      <daterange-filter *ngSwitchCase="'daterange'"
+                        [query]="query"
+                        [ngClass]="inputClass"
+                        [column]="column"
+                        (customFilter)="onCustomFilter($event)">
+      </daterange-filter>
       <input-filter *ngSwitchDefault
                     [query]="query"
                     [ngClass]="inputClass"
@@ -77,5 +83,9 @@ export class FilterComponent implements OnChanges {
       search: query,
       filter: this.column.getFilterFunction(),
     });
+  }
+
+  onCustomFilter(query: any[]) {
+    this.source.setFilter(query);
   }
 }

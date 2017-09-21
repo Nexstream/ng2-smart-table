@@ -11,6 +11,18 @@
                       (filter)="filter($event)">
   </thead>
 
+  <!--<tbody ng2-st-tbody [grid]="grid"
+                      [source]="source"
+                      [deleteConfirm]="deleteConfirm"
+                      [editConfirm]="editConfirm"
+                      (edit)="edit.emit($event)"
+                      (delete)="delete.emit($event)"
+                      (custom)="custom.emit($event)"
+                      (userSelectRow)="onUserSelectRow($event)"
+                      (editRowSelect)="editRowSelect($event)"
+                      (multipleSelectRow)="multipleSelectRow($event)"
+                      (rowHover)="onRowHover($event)"
+                      [class.box-overlay]="showLoading">-->
   <tbody ng2-st-tbody [grid]="grid"
                       [source]="source"
                       [deleteConfirm]="deleteConfirm"
@@ -21,7 +33,7 @@
                       (userSelectRow)="onUserSelectRow($event)"
                       (editRowSelect)="editRowSelect($event)"
                       (multipleSelectRow)="multipleSelectRow($event)"
-                      (rowHover)="onRowHover($event)">
+                      [class.box-overlay]="showLoading">
   </tbody>
 
 </table>

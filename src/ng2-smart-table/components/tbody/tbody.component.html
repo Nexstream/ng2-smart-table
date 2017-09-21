@@ -1,4 +1,5 @@
-<tr *ngFor="let row of grid.getRows()" (click)="userSelectRow.emit(row)" (mouseover)="rowHover.emit(row)" class="ng2-smart-row" [ngClass]="{selected: row.isSelected}">
+<!--<tr *ngFor="let row of grid.getRows()" (click)="userSelectRow.emit(row)" (mouseover)="rowHover.emit(row)" class="ng2-smart-row" [ngClass]="{selected: row.isSelected}">-->
+<tr *ngFor="let row of grid.getRows()" (click)="userSelectRow.emit(row)" class="ng2-smart-row" [ngClass]="{selected: row.isSelected}">
   <td *ngIf="grid.isMultiSelectVisible()" class="ng2-smart-actions ng2-smart-action-multiple-select" (click)="multipleSelectRow.emit(row)">
     <input type="checkbox" class="form-control" [ngModel]="row.isSelected">
   </td>
@@ -29,11 +30,11 @@
                           [isInEditing]="row.isInEditing">
     </ng2-smart-table-cell>
   </td>
-  
+
   <td *ngIf="row.isInEditing && grid.showActionColumn('right')"  class="ng2-smart-actions">
     <ng2-st-tbody-create-cancel [grid]="grid" [row]="row" [editConfirm]="editConfirm"></ng2-st-tbody-create-cancel>
   </td>
-  
+
   <td *ngIf="!row.isInEditing && grid.showActionColumn('right')" class="ng2-smart-actions">
     <ng2-st-tbody-custom [grid]="grid" (custom)="custom.emit($event)" [row]="row" [source]="source"></ng2-st-tbody-custom>
 
@@ -49,7 +50,7 @@
   </td>
 </tr>
 
-<tr *ngIf="grid.getRows().length == 0">
+<tr *ngIf="grid.getRows().length == 0 && !grid.showLoading">
   <td [attr.colspan]="grid.getColumns().length + (grid.getSetting('actions.add') || grid.getSetting('actions.edit') || grid.getSetting('actions.delete'))">
     {{ grid.getSetting('noDataMessage') }}
   </td>

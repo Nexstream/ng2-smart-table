@@ -1,5 +1,6 @@
 :host {
   font-size: 1rem;
+  margin-bottom: 50px;
 
   /deep/ {
     * {
@@ -26,6 +27,7 @@
       overflow: auto;
       word-break: normal;
       word-break: keep-all;
+      overflow-x: scroll;
 
       tr {
         th {

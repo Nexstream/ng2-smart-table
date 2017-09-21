@@ -8,6 +8,8 @@ export abstract class DataSource {
   protected onUpdatedSource = new Subject<any>();
   protected onRemovedSource = new Subject<any>();
 
+  public onRequestSource = new Subject<any>();
+
   abstract getAll(): Promise<any>;
   abstract getElements(): Promise<any>;
   abstract getSort(): any;
@@ -38,6 +40,10 @@ export abstract class DataSource {
 
   onRemoved(): Observable<any> {
     return this.onRemovedSource.asObservable();
+  }
+
+  onRequestData(): Observable<any> {
+    return this.onRequestSource.asObservable();
   }
 
   prepend(element: any): Promise<any> {

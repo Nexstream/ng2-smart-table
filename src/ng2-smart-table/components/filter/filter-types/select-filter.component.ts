@@ -4,6 +4,8 @@ import { FormControl } from '@angular/forms';
 import { DefaultFilter } from './default-filter';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/skip';
+
 
 @Component({
   selector: 'select-filter',
@@ -32,6 +34,7 @@ export class SelectFilterComponent extends DefaultFilter implements OnInit {
     this.inputControl.valueChanges
       .distinctUntilChanged()
       .debounceTime(this.delay)
+      .skip(1)
       .subscribe((value: string) => this.setFilter());
   }
 }

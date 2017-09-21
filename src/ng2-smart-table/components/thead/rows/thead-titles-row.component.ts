@@ -14,7 +14,7 @@ import { DataSource } from '../../../lib/data-source/data-source';
     </th>
     <th ng2-st-actions-title *ngIf="grid.showActionColumn('left')" [grid]="grid"></th>
     <th *ngFor="let column of grid.getColumns()" class="ng2-smart-th {{ column.id }}" [ngClass]="column.class"
-      [style.width]="column.width" >
+      [style.width]="column.width" [style.min-width]="column.settings.minWidth">
       <ng2-st-column-title [source]="source" [column]="column" (sort)="sort.emit($event)"></ng2-st-column-title>
     </th>
     <th ng2-st-actions-title *ngIf="grid.showActionColumn('right')" [grid]="grid"></th>
