@@ -110,13 +110,13 @@ export class Grid {
       if (deferred.resolve.skipAdd) {
         this.createFormShown = false;
       } else {
-      this.source.prepend(newData).then(() => {
-        this.createFormShown = false;
-        this.dataSet.createNewRow();
-      });
+        this.source.prepend(newData).then(() => {
+          this.createFormShown = false;
+          this.dataSet.createNewRow();
+        });
       }
     }).catch((err) => {
-      // doing nothing
+      console.error(err);
     });
 
     if (this.getSetting('add.confirmCreate')) {
@@ -140,7 +140,7 @@ export class Grid {
       } else {
         this.source.update(row.getData(), newData).then(() => {
           row.isInEditing = false;
-      });
+        });
       }
     }).catch((err) => {
       // doing nothing

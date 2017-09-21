@@ -28,6 +28,14 @@ export class Ng2SmartTableComponent implements OnChanges {
   @Output() createConfirm = new EventEmitter<any>();
   // @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
 
+  tableClass: string;
+  tableId: string;
+  isHideHeader: boolean;
+  isHideSubHeader: boolean;
+  isPagerDisplay: boolean;
+  rowClassFunction: Function;
+
+
   grid: Grid;
   defaultSettings: Object = {
     mode: 'inline', // inline|external|click-to-edit
@@ -73,6 +81,7 @@ export class Ng2SmartTableComponent implements OnChanges {
       display: true,
       perPage: 10,
     },
+    rowClassFunction: () => ""
   };
 
   isAllSelected: boolean = false;
@@ -95,6 +104,13 @@ export class Ng2SmartTableComponent implements OnChanges {
     this.source.onRequestData().subscribe((states: boolean) => {
       this.showLoading = states;
     })
+
+    this.tableId = this.grid.getSetting('attr.id');
+    this.tableClass = this.grid.getSetting('attr.class');
+    this.isHideHeader = this.grid.getSetting('hideHeader');
+    this.isHideSubHeader = this.grid.getSetting('hideSubHeader');
+    this.isPagerDisplay = this.grid.getSetting('pager.display');
+    this.rowClassFunction = this.grid.getSetting('rowClassFunction');
   }
 
   editRowSelect(row: Row) {

@@ -28,6 +28,7 @@ export class InputFilterComponent extends DefaultFilter implements OnInit {
 
   ngOnInit() {
     this.inputControl.valueChanges
+      .skip(1)
       .distinctUntilChanged()
       .debounceTime(this.delay)
       .skip(1)
