@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FilterComponent } from './filter.component';
 import { CheckboxFilterComponent } from './filter-types/checkbox-filter.component';
@@ -10,6 +11,7 @@ import { CompleterFilterComponent } from './filter-types/completer-filter.compon
 import { InputFilterComponent } from './filter-types/input-filter.component';
 import { SelectFilterComponent } from './filter-types/select-filter.component';
 import { DateRangeFilterComponent } from './filter-types/daterange-filter.component';
+import { DatepickerFilterComponent } from './filter-types/datepicker-filter.component';
 
 const FILTER_COMPONENTS = [
   FilterComponent,
@@ -18,6 +20,7 @@ const FILTER_COMPONENTS = [
   InputFilterComponent,
   SelectFilterComponent,
   DateRangeFilterComponent,
+  DatepickerFilterComponent
 ];
 
 @NgModule({
@@ -26,7 +29,8 @@ const FILTER_COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     Ng2CompleterModule,
-    MyDateRangePickerModule
+    MyDateRangePickerModule,
+    NgbModule.forRoot(),
   ],
   declarations: [
     ...FILTER_COMPONENTS,
@@ -35,4 +39,5 @@ const FILTER_COMPONENTS = [
     ...FILTER_COMPONENTS,
   ],
 })
-export class FilterModule { }
+export class FilterModule {
+}
