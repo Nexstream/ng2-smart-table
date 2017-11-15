@@ -65,8 +65,6 @@ export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
           search: new Date(a.year,a.month-1, a.day).getTime()
         }];
 
-        console.log(filters);
-
         return filters;
       })
       .subscribe((filters) => {
