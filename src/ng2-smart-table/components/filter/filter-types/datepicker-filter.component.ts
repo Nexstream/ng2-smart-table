@@ -11,7 +11,7 @@ import 'rxjs/add/operator/skip';
   template: `
     <form [formGroup]="dateForm" novalidate>
       <div class="input-group">
-      <span class="input-group-btn">
+      <span class="input-group-btn" (click)="d.toggle()">
         <i class="fa fa-calendar"></i>
       </span>
         <input
