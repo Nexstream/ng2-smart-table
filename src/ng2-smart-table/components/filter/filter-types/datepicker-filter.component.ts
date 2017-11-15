@@ -12,7 +12,7 @@ import 'rxjs/add/operator/skip';
     <form [formGroup]="dateForm" novalidate>
       <div class="input-group">
       <span class="input-group-btn" (click)="d.toggle()">
-        <i class="fa fa-calendar"></i>
+        <i style="font-size: 23px; margin-right: 5px; cursor:pointer" class="fa fa-calendar"></i>
       </span>
         <input
           type="text"
@@ -26,7 +26,7 @@ import 'rxjs/add/operator/skip';
     </form>
   `,
   styles: [`
-    
+
   `]
 })
 export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
@@ -62,8 +62,10 @@ export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
       .map((a) => {
         let filters = [{
           field: 'date',
-          search: a.year.toString() + '-' + a.month.toString() + '-' + a.day.toString()
+          search: new Date(a.year,a.month-1, a.day).getTime()
         }];
+
+        console.log(filters);
 
         return filters;
       })
