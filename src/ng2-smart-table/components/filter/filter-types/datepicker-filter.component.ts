@@ -21,6 +21,7 @@ import 'rxjs/add/operator/skip';
           ngbDatepicker
           #d="ngbDatepicker"
           formControlName="date"
+          [readonly]="true"
         />
       </div>
     </form>
