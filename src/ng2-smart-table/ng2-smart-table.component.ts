@@ -10,7 +10,6 @@ import { LocalDataSource } from './lib/data-source/local/local.data-source';
   selector: 'ng2-smart-table',
   styleUrls: ['./ng2-smart-table.component.scss'],
   templateUrl: './ng2-smart-table.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Ng2SmartTableComponent implements OnChanges {
 
