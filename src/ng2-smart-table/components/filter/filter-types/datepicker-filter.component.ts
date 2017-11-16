@@ -61,7 +61,7 @@ export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
       .debounceTime(this.delay)
       .map((a) => {
         let filters = [{
-          field: 'date',
+          field: this.column.id,
           search: new Date(a.year,a.month-1, a.day).getTime()
         }];
 
