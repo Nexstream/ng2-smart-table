@@ -14,20 +14,45 @@ import 'rxjs/add/operator/skip';
       <span class="input-group-btn" (click)="d.toggle()">
         <i style="font-size: 23px; margin-right: 5px; cursor:pointer" class="fa fa-calendar"></i>
       </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="yyyy-mm-dd"
-          ngbDatepicker
-          #d="ngbDatepicker"
-          formControlName="date"
-          [readonly]="true"
-        />
+        <div class="form-control date-input">
+          <input
+            type="text"
+            class="input"
+            placeholder="yyyy-mm-dd"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            formControlName="date"
+            [readonly]="true"
+          />
+          <i class="fa fa-times" (click)="clearFilter()"></i>
+        </div>
       </div>
     </form>
   `,
   styles: [`
+    .date-input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+    }
 
+    .input {
+      border: none;
+      padding: 0 !important;
+    }
+
+    .fa-calendar {
+      font-size: 25px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+    .fa-times {
+      font-size: 15px;
+      color: lightgrey;
+      cursor: pointer
+    }
   `]
 })
 export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
@@ -63,7 +88,7 @@ export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
       .map((a) => {
         let filters = [{
           field: this.column.id,
-          search: new Date(a.year,a.month-1, a.day).getTime()
+          search: new Date(a.year, a.month - 1, a.day).getTime() || ''
         }];
 
         return filters;
@@ -73,4 +98,12 @@ export class DatepickerFilterComponent extends DefaultFilter implements OnInit {
         this.setCustomFilter();
       });
   }
+
+  clearFilter() {
+    if (! this.query) {
+      return
+    }
+    this.dateForm.controls['date'].setValue('');
+  }
+
 }
