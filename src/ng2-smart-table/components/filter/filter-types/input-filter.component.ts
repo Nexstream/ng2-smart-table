@@ -31,7 +31,6 @@ export class InputFilterComponent extends DefaultFilter implements OnInit {
       .skip(1)
       .distinctUntilChanged()
       .debounceTime(this.delay)
-      .skip(1)
       .subscribe((value: string) => this.setFilter());
   }
 }
