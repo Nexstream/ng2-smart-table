@@ -14,7 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/distinctUntilChanged';
-import { URLSearchParams } from '@angular/http';
+import { Headers, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 /**
@@ -3570,6 +3570,75 @@ class ServerDataSource extends LocalDataSource {
     }
 }
 
+class CustomServerDataSource extends ServerDataSource {
+    constructor(http, conf, activateRoute, router, hasInitFilter, isPost = true) {
+        super(http, conf);
+        this.http = http;
+        this.activateRoute = activateRoute;
+        this.router = router;
+        this.hasInitFilter = hasInitFilter;
+        this.requestOptions = {
+            'totalRowPerPage': 10,
+            'pageNo': this.pagingConf['page'] || 1,
+            'filterSearch': [],
+        };
+        this.pagingConf.page = 1;
+        this.conf.pagerPageKey = 'pageNo';
+        this.conf.pagerLimitKey = 'totalRowPerPage';
+        this.isPost = isPost;
+        this.addApiKey();
+        this.setPaging(1, 1, false);
+        this.activateRoute.queryParams.subscribe((e) => {
+            this.requestOptions.pageNo = 1;
+            if (e['page']) {
+                this.requestOptions.pageNo = +e['page'];
+            }
+            this.setPaging(this.requestOptions.pageNo, 1, false);
+        });
+    }
+    requestElements() {
+        this.requestOptions.pageNo = this.getPaging().page;
+        this.requestOptions.filterSearch = [];
+        let currentPage = null;
+        if (this.requestOptions.pageNo > 1) {
+            currentPage = this.requestOptions.pageNo;
+        }
+        this.router.navigate([], {
+            queryParams: { page: currentPage },
+            relativeTo: this.activateRoute
+        });
+        this.filterConf.filters.forEach((element) => {
+            const obj = {};
+            obj['searchVar'] = element.field;
+            obj['searchKeyword'] = element.search;
+            if (this.hasInitFilter) {
+                if (obj['searchVar'] === this.hasInitFilter['searchVar'] && !obj['searchKeyword']) {
+                    this.requestOptions.filterSearch.push(this.hasInitFilter);
+                }
+            }
+            if (element.search !== '' && element.search !== null) {
+                this.requestOptions.filterSearch.push(obj);
+            }
+        });
+        if (this.isPost) {
+            return this.http.post(this.conf.endPoint, this.requestOptions, { headers: this.headers });
+        }
+        else {
+            return this.http.get(this.conf.endPoint, { headers: this.headers });
+        }
+    }
+    extractDataFromResponse(res) {
+        return res.json().arrayList || res.json().dataResp;
+    }
+    extractTotalFromResponse(res) {
+        return res.json().totalPage;
+    }
+    addApiKey() {
+        this.headers = new Headers();
+        this.headers.append('apiKey', localStorage.getItem('apiKey'));
+    }
+}
+
 //# sourceMappingURL=index.js.map
 
-export { DefaultEditor, Cell, LocalDataSource, ServerDataSource, Ng2SmartTableModule };
+export { DefaultEditor, Cell, LocalDataSource, ServerDataSource, CustomServerDataSource, Ng2SmartTableModule };
