@@ -1654,6 +1654,8 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             showApplyBtn: false,
             selectionTxtFontSize: '.875em',
         };
+        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
+        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
     }
     get query() {
         return this.searchDate;
@@ -1677,14 +1679,14 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             };
             value.forEach(e => {
                 let search = e.search || new Date();
-                if (e.field === 'fromDate') {
+                if (e.field === this.startKey) {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
                         day: new Date(search).getDate()
                     };
                 }
-                if (e.field === 'toDate') {
+                if (e.field === this.endKey) {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
@@ -1709,21 +1711,21 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             .debounceTime(this.delay)
             .map((data) => {
             let filters = [{
-                    field: 'fromDate',
+                    field: this.startKey,
                     search: '',
                 }, {
-                    field: 'toDate',
+                    field: this.endKey,
                     search: '',
                 }];
             if (data) {
                 let fromDate = data.formatted.split(' - ')[0];
                 let toDate = data.formatted.split(' - ')[1];
                 filters.forEach(filter => {
-                    if (filter.field == 'fromDate') {
+                    if (filter.field == this.startKey) {
                         filter.search = fromDate;
                     }
                     
-                    if (filter.field == 'toDate') {
+                    if (filter.field == this.endKey) {
                         filter.search = toDate;
                     }
                     
