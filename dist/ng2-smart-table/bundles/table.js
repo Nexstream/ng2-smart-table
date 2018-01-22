@@ -1677,14 +1677,14 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             };
             value.forEach(e => {
                 let search = e.search || new Date();
-                if (e.field === this.startKey) {
+                if (e.field === 'fromDate') {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
                         day: new Date(search).getDate()
                     };
                 }
-                if (e.field === this.endKey) {
+                if (e.field === 'toDate') {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
@@ -1697,8 +1697,6 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
         this.searchDate = value;
     }
     ngOnInit() {
-        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
-        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}
@@ -1711,21 +1709,21 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             .debounceTime(this.delay)
             .map((data) => {
             let filters = [{
-                    field: this.startKey,
+                    field: 'fromDate',
                     search: '',
                 }, {
-                    field: this.endKey,
+                    field: 'toDate',
                     search: '',
                 }];
             if (data) {
                 let fromDate = data.formatted.split(' - ')[0];
                 let toDate = data.formatted.split(' - ')[1];
                 filters.forEach(filter => {
-                    if (filter.field == this.startKey) {
+                    if (filter.field == 'fromDate') {
                         filter.search = fromDate;
                     }
                     
-                    if (filter.field == this.endKey) {
+                    if (filter.field == 'toDate') {
                         filter.search = toDate;
                     }
                     

@@ -11,8 +11,6 @@ export declare class DateRangeFilterComponent extends DefaultFilter implements O
     rangePickerModel: Object;
     myDateRangePickerOptions: IMyDrpOptions;
     private searchDate;
-    private startKey;
-    private endKey;
     query: any[];
     constructor(formBuilder: FormBuilder);
     ngOnInit(): void;

@@ -1689,7 +1689,6 @@ var DateRangeFilterComponent = (function (_super) {
             return this.searchDate;
         },
         set: function (value) {
-            var _this = this;
             if (!Array.isArray(value)) {
                 value = [];
             }
@@ -1708,14 +1707,14 @@ var DateRangeFilterComponent = (function (_super) {
                 };
                 value.forEach(function (e) {
                     var search = e.search || new Date();
-                    if (e.field === _this.startKey) {
+                    if (e.field === 'fromDate') {
                         date_1.beginDate = {
                             year: new Date(search).getFullYear(),
                             month: new Date(search).getMonth() + 1,
                             day: new Date(search).getDate()
                         };
                     }
-                    if (e.field === _this.endKey) {
+                    if (e.field === 'toDate') {
                         date_1.beginDate = {
                             year: new Date(search).getFullYear(),
                             month: new Date(search).getMonth() + 1,
@@ -1732,8 +1731,6 @@ var DateRangeFilterComponent = (function (_super) {
     });
     DateRangeFilterComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
-        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}
@@ -1746,21 +1743,21 @@ var DateRangeFilterComponent = (function (_super) {
             .debounceTime(this.delay)
             .map(function (data) {
             var filters = [{
-                    field: _this.startKey,
+                    field: 'fromDate',
                     search: '',
                 }, {
-                    field: _this.endKey,
+                    field: 'toDate',
                     search: '',
                 }];
             if (data) {
                 var fromDate_1 = data.formatted.split(' - ')[0];
                 var toDate_1 = data.formatted.split(' - ')[1];
                 filters.forEach(function (filter) {
-                    if (filter.field == _this.startKey) {
+                    if (filter.field == 'fromDate') {
                         filter.search = fromDate_1;
                     }
                     
-                    if (filter.field == _this.endKey) {
+                    if (filter.field == 'toDate') {
                         filter.search = toDate_1;
                     }
                     
