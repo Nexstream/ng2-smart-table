@@ -1654,8 +1654,6 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             showApplyBtn: false,
             selectionTxtFontSize: '.875em',
         };
-        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
-        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
     }
     get query() {
         return this.searchDate;
@@ -1699,6 +1697,8 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
         this.searchDate = value;
     }
     ngOnInit() {
+        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
+        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}

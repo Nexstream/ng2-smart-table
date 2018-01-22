@@ -1682,8 +1682,6 @@ var DateRangeFilterComponent = (function (_super) {
             showApplyBtn: false,
             selectionTxtFontSize: '.875em',
         };
-        _this.startKey = _this.column.getFilterConfig().startKey || 'fromDate';
-        _this.endKey = _this.column.getFilterConfig().endKey || 'toDate';
         return _this;
     }
     Object.defineProperty(DateRangeFilterComponent.prototype, "query", {
@@ -1734,6 +1732,8 @@ var DateRangeFilterComponent = (function (_super) {
     });
     DateRangeFilterComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
+        this.endKey = this.column.getFilterConfig().endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}
