@@ -1677,14 +1677,14 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             };
             value.forEach(e => {
                 let search = e.search || new Date();
-                if (e.field === 'fromDate') {
+                if (e.field === this.startKey) {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
                         day: new Date(search).getDate()
                     };
                 }
-                if (e.field === 'toDate') {
+                if (e.field === this.endKey) {
                     date.beginDate = {
                         year: new Date(search).getFullYear(),
                         month: new Date(search).getMonth() + 1,
@@ -1697,6 +1697,9 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
         this.searchDate = value;
     }
     ngOnInit() {
+        const columnObj = Object.assign({}, this.column);
+        this.startKey = columnObj.filter.startKey || 'fromDate';
+        this.endKey = columnObj.filter.endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}
@@ -1709,24 +1712,22 @@ let DateRangeFilterComponent = class DateRangeFilterComponent extends DefaultFil
             .debounceTime(this.delay)
             .map((data) => {
             let filters = [{
-                    field: 'fromDate',
+                    field: this.startKey,
                     search: '',
                 }, {
-                    field: 'toDate',
+                    field: this.endKey,
                     search: '',
                 }];
             if (data) {
                 let fromDate = data.formatted.split(' - ')[0];
                 let toDate = data.formatted.split(' - ')[1];
                 filters.forEach(filter => {
-                    if (filter.field == 'fromDate') {
+                    if (filter.field == this.startKey) {
                         filter.search = fromDate;
                     }
-                    
-                    if (filter.field == 'toDate') {
+                    if (filter.field == this.endKey) {
                         filter.search = toDate;
                     }
-                    
                 });
             }
             return filters;
@@ -1750,7 +1751,7 @@ DateRangeFilterComponent = __decorate$22([
       <my-date-range-picker name="mydaterange"
                             [options]="myDateRangePickerOptions"
                             [ngClass]="inputClass"
-        formControlName="myDateRange"></my-date-range-picker>
+                            formControlName="myDateRange"></my-date-range-picker>
     </form>
   `,
         styles: [`

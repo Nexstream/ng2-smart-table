@@ -42,6 +42,7 @@ var DateRangeFilterComponent = (function (_super) {
             return this.searchDate;
         },
         set: function (value) {
+            var _this = this;
             if (!Array.isArray(value)) {
                 value = [];
             }
@@ -60,14 +61,14 @@ var DateRangeFilterComponent = (function (_super) {
                 };
                 value.forEach(function (e) {
                     var search = e.search || new Date();
-                    if (e.field === 'fromDate') {
+                    if (e.field === _this.startKey) {
                         date_1.beginDate = {
                             year: new Date(search).getFullYear(),
                             month: new Date(search).getMonth() + 1,
                             day: new Date(search).getDate()
                         };
                     }
-                    if (e.field === 'toDate') {
+                    if (e.field === _this.endKey) {
                         date_1.beginDate = {
                             year: new Date(search).getFullYear(),
                             month: new Date(search).getMonth() + 1,
@@ -84,6 +85,9 @@ var DateRangeFilterComponent = (function (_super) {
     });
     DateRangeFilterComponent.prototype.ngOnInit = function () {
         var _this = this;
+        var columnObj = Object.assign({}, this.column);
+        this.startKey = columnObj.filter.startKey || 'fromDate';
+        this.endKey = columnObj.filter.endKey || 'toDate';
         this.dateRange = this.formBuilder.group({
             // Empty string means no initial value. Can be also specific date range for example:
             // {beginDate: {year: 2018, month: 10, day: 9}, endDate: {year: 2018, month: 10, day: 19}}
@@ -96,24 +100,22 @@ var DateRangeFilterComponent = (function (_super) {
             .debounceTime(this.delay)
             .map(function (data) {
             var filters = [{
-                    field: 'fromDate',
+                    field: _this.startKey,
                     search: '',
                 }, {
-                    field: 'toDate',
+                    field: _this.endKey,
                     search: '',
                 }];
             if (data) {
                 var fromDate_1 = data.formatted.split(' - ')[0];
                 var toDate_1 = data.formatted.split(' - ')[1];
                 filters.forEach(function (filter) {
-                    if (filter.field == 'fromDate') {
+                    if (filter.field == _this.startKey) {
                         filter.search = fromDate_1;
                     }
-                    ;
-                    if (filter.field == 'toDate') {
+                    if (filter.field == _this.endKey) {
                         filter.search = toDate_1;
                     }
-                    ;
                 });
             }
             return filters;
@@ -133,7 +135,7 @@ __decorate([
 DateRangeFilterComponent = __decorate([
     Component({
         selector: 'daterange-filter',
-        template: "\n    <form [formGroup]=\"dateRange\" novalidate>\n      <my-date-range-picker name=\"mydaterange\"\n                            [options]=\"myDateRangePickerOptions\"\n                            [ngClass]=\"inputClass\"\n        formControlName=\"myDateRange\"></my-date-range-picker>\n    </form>\n  ",
+        template: "\n    <form [formGroup]=\"dateRange\" novalidate>\n      <my-date-range-picker name=\"mydaterange\"\n                            [options]=\"myDateRangePickerOptions\"\n                            [ngClass]=\"inputClass\"\n                            formControlName=\"myDateRange\"></my-date-range-picker>\n    </form>\n  ",
         styles: ["\n    form {\n      height: 28px;\n    }\n  "]
     }),
     __metadata("design:paramtypes", [FormBuilder])
