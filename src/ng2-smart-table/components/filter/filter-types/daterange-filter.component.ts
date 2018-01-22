@@ -38,6 +38,10 @@ export class DateRangeFilterComponent extends DefaultFilter implements OnInit {
   };
   private searchDate: any;
 
+  // custom startKey and endKey
+  private startKey: string;
+  private endKey: string;
+
   get query(): any[] {
     return this.searchDate;
   }
@@ -64,14 +68,14 @@ export class DateRangeFilterComponent extends DefaultFilter implements OnInit {
       value.forEach(e => {
         let search = e.search || new Date();
 
-        if (e.field === 'fromDate') {
+        if (e.field === this.startKey) {
           date.beginDate = {
             year: new Date(search).getFullYear(),
             month: new Date(search).getMonth() + 1,
             day: new Date(search).getDate()
           }
         }
-        if (e.field === 'toDate') {
+        if (e.field === this.endKey) {
           date.beginDate = {
             year: new Date(search).getFullYear(),
             month: new Date(search).getMonth() + 1,
@@ -87,6 +91,8 @@ export class DateRangeFilterComponent extends DefaultFilter implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     super();
+    this.startKey = this.column.getFilterConfig().startKey || 'fromDate';
+    this.endKey = this.column.getFilterConfig().endKey || 'toDate';
   }
 
   ngOnInit() {
@@ -104,10 +110,10 @@ export class DateRangeFilterComponent extends DefaultFilter implements OnInit {
       // .skip(1)
       .map((data: IMyDateRangeModel) => {
         let filters = [{
-          field: 'fromDate',
+          field: this.startKey,
           search: '',
         }, {
-          field: 'toDate',
+          field: this.endKey,
           search: '',
         }];
 
@@ -115,14 +121,14 @@ export class DateRangeFilterComponent extends DefaultFilter implements OnInit {
           let fromDate = data.formatted.split(' - ')[0];
           let toDate = data.formatted.split(' - ')[1];
           filters.forEach(filter => {
-            if (filter.field == 'fromDate') { filter.search = fromDate };
-            if (filter.field == 'toDate') { filter.search = toDate };
+            if (filter.field == this.startKey) { filter.search = fromDate };
+            if (filter.field == this.endKey) { filter.search = toDate };
           })
         }
         return filters;
       })
       .subscribe((filters) => {
-        this.query = filters
+        this.query = filters;
         this.setCustomFilter();
       });
   }
